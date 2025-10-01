@@ -1,88 +1,40 @@
-// /C:/VSCode stuff/ds/exp3/exp3a.cpp
 #include <iostream>
-
 using namespace std;
 
-const int MAX_SIZE = 100;
+const int MAX = 100;
 
 struct Stack {
-    int data[MAX_SIZE];
-    int top;
-    Stack() : top(-1) {}
+    int arr[MAX], top = -1;
 };
 
-bool push(Stack &s, int value) {
-    if (s.top >= MAX_SIZE - 1) {
-        cout << "Error - stack overflow ;)\n";
-        return false;
-    }
-    s.data[++s.top] = value;
-    return true;
+void push(Stack &s, int x) {
+    if (s.top == MAX - 1) cout << "Overflow\n";
+    else s.arr[++s.top] = x;
 }
 
-bool pop(Stack &s, int &out) {
-    if (s.top < 0) {
-        cout << "Error - stack underflow\n";
-        return false;
-    }
-    out = s.data[s.top--];
-    return true;
+void pop(Stack &s) {
+    if (s.top == -1) cout << "Underflow\n";
+    else cout << "Popped: " << s.arr[s.top--] << "\n";
 }
 
-bool peek(const Stack &s, int &out) {
-    if (s.top < 0) {
-        cout << "Stack is empty\n";
-        return false;
-    }
-    out = s.data[s.top];
-    return true;
+void peek(const Stack &s) {
+    if (s.top == -1) cout << "Empty\n";
+    else cout << "Top: " << s.arr[s.top] << "\n";
 }
 
-void printStack(const Stack &s) {
-    if (s.top < 0) {
-        cout << "Stack is empty\n";
-        return;
-    }
-    cout << "Top -> ";
-    for (int i = s.top; i >= 0; --i) {
-        cout << s.data[i];
-        if (i > 0) cout << " | ";
-    }
-    cout << "\n";
+void print(const Stack &s) {
+    if (s.top == -1) cout << "Empty\n";
+    else for (int i = s.top; i >= 0; --i) cout << s.arr[i] << (i ? " " : "\n");
 }
 
 int main() {
-    Stack st;
-    int choice;
-    while (true) {
-        cout << "\nChoose an operation:\n"
-             << "1. Push\n"
-             << "2. Pop\n"
-             << "3. Peek (top)\n"
-             << "4. Print stack\n"
-             << "5. Exit\n"
-             << "Enter choice: ";
-        if (!(cin >> choice)) break;
-
-        if (choice == 1) {
-            int x;
-            cout << "Enter integer to push: ";
-            cin >> x;
-            push(st, x);
-        } else if (choice == 2) {
-            int val;
-            if (pop(st, val)) cout << "Popped: " << val << "\n";
-        } else if (choice == 3) {
-            int val;
-            if (peek(st, val)) cout << "Top: " << val << "\n";
-        } else if (choice == 4) {
-            printStack(st);
-        } else if (choice == 5) {
-            cout << "Exiting.\n";
-            break;
-        } else {
-            cout << "Invalid choice.\n";
-        }
+    Stack s;
+    int c, x;
+    while (cin >> c && c != 5) {
+        if (c == 1) { cin >> x; push(s, x); }
+        else if (c == 2) pop(s);
+        else if (c == 3) peek(s);
+        else if (c == 4) print(s);
+        else cout << "Invalid\n";
     }
-    return 0;
 }
