@@ -37,14 +37,9 @@ public:
             return;
         }
     }
-    int display(){
+    int display(){}
         //display the tree in inorder
-        if(this == nullptr) return -1;
-        if(this->left != nullptr) this->left->display();
-        cout << this->data << " ";
-        if(this->right != nullptr) this->right->display();
-        return 0;
-    }
+
 };
 
 int main(){
@@ -58,4 +53,3 @@ int main(){
     }
     return 0;
 }
-
