@@ -1,85 +1,69 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
-struct Node {
-    int data;
-    Node* next;
-    explicit Node(int v) : data(v), next(nullptr) {}
-};
-
-class LinkedQueue {
-    Node* front_;
-    Node* back_;
+class Queue {
 public:
-    LinkedQueue() : front_(nullptr), back_(nullptr) {}
-    ~LinkedQueue() {
-        while (front_) {
-            Node* tmp = front_;
-            front_ = front_->next;
-            delete tmp;
-        }
+    int data;
+    Queue* next;
+} *front = NULL, *rear = NULL;
+
+void enqueue(int x) {
+    Queue* t = new Queue;
+    if (t == NULL) {
+        cout << "Queue is full" << endl;
+        return;
     }
-    void enqueue(int data) {
-        Node* node = new Node(data);
-        if (!back_) {
-            front_ = back_ = node;
-            return;
-        }
-        back_->next = node;
-        back_ = node;
+
+    t->data = x;
+    t->next = NULL;
+
+    if (front == NULL) {
+        front = rear = t;
+    } else {
+        rear->next = t;
+        rear = t;
     }
-    bool dequeue(int& removed) {
-        if (!front_) {
-            return false;
-        }
-        Node* tmp = front_;
-        removed = tmp->data;
-        front_ = front_->next;
-        if (!front_) {
-            back_ = nullptr;
-        }
-        delete tmp;
-        return true;
+}
+
+int dequeue() {
+    int x = -1;
+    if (front == NULL) {
+        cout << "Queue is empty" << endl;
+        return x;
     }
-    void display() const {
-        if (!front_) {
-            cout << "Queue is empty\n";
-            return;
-        }
-        for (Node* cur = front_; cur; cur = cur->next) {
-            cout << cur->data << (cur->next ? " " : "\n");
-        }
+
+    Queue* p = front;
+    x = p->data;
+    front = front->next;
+    delete p;
+
+    if (front == NULL)
+        rear = NULL;
+
+    return x;
+}
+
+void display() {
+    Queue* p = front;
+    while (p) {
+        cout << p->data << " ";
+        p = p->next;
     }
-};
+    cout << endl;
+}
 
 int main() {
-    LinkedQueue queue;
-    int choice;
-    while (true) {
-        cout << "1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\nChoice: ";
-        if (!(cin >> choice)) {
-            break;
-        }
-        if (choice == 1) {
-            int data;
-            cout << "data: ";
-            if (cin >> data) {
-                queue.enqueue(data);
-            }
-        } else if (choice == 2) {
-            int removed;
-            if (queue.dequeue(removed)) {
-                cout << "Dequeued: " << removed << "\n";
-            } else {
-                cout << "Queue is empty\n";
-            }
-        } else if (choice == 3) {
-            queue.display();
-        } else if (choice == 4) {
-            break;
-        } else {
-            cout << "Invalid option\n";
-        }
-    }
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+
+    cout << "Queue contents: ";
+    display();
+
+    cout << "Dequeued: " << dequeue() << endl;
+
+    cout << "Queue after dequeue: ";
+    display();
+
     return 0;
 }
