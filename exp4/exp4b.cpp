@@ -8,7 +8,7 @@ public:
     Node* prev;
     int data;
     Node* next;
-} *front = NULL, *rear = NULL;
+} *front =NULL, *rear = NULL;
 
 void insertAtFront(int x) {
     Node* t = new Node;

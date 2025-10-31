@@ -22,7 +22,7 @@ void enqueue(int x) {
     } else {
         rear->next = t;
         rear = t;
-    }
+    }  
 }
 
 int dequeue() {
